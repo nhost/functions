@@ -1,5 +1,9 @@
 FROM node:14-alpine
 
+# * Same version as in Watchtower
+ARG EXPRESS_VERSION 4.17.1
+ENV EXPRESS_VERSION $EXPRESS_VERSION
+
 # * path to the server files 
 ARG SERVER_PATH /opt/server
 ENV SERVER_PATH=$SERVER_PATH
@@ -18,7 +22,7 @@ ENV NHOST_PROJECT_PATH=/opt/project
 ENV PACKAGE_MANAGER=pnpm
 
 # * Install packages that are required for this docker image to run
-RUN npm install -g pnpm nodemon express glob @swc-node/register typescript @antfu/ni
+RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION glob @swc-node/register typescript @antfu/ni
 
 # * The pnpm store should be mounted in the same volume as node_modules (requires hard links)
 # * See https://pnpm.io/6.x/npmrc#store-dir
