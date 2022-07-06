@@ -2,7 +2,9 @@
 echo "defaultAgent=$PACKAGE_MANAGER" > ~/.nirc
 
 # * Create a default package.json file if it doesn't exist yet
-npm init -y 1> /dev/null
+if [[ ! -f "package.json" ]]; then
+    npm init -y 1> /dev/null
+fi
 
 # * Start nodemon that listens to package.json and lock files and run npm/pnpm/yarn install,
 # * Then run another nodemon that listens to the functions directory and run the server
