@@ -1,6 +1,7 @@
 # Nhost functions in Docker
 
 ## Features
+
 - Hot reload of package.json, lock files, and the functions directory
 - Accepts both Javascript and Typesript
 - Create a package.json file if missing
@@ -19,3 +20,7 @@ docker-compose up
 docker-compose up functions traefik
 
 ```
+
+## Create a new version
+
+Create a GitHub release, with a new semver tag prefixed with `v`, for instance `v0.1.2`
