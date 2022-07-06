@@ -21,6 +21,9 @@ ENV NHOST_PROJECT_PATH=/opt/project
 # * Default package manager
 ENV PACKAGE_MANAGER=pnpm
 
+# * Use a custom Typescript compiler rather than the one from the project
+ENV SWC_NODE_PROJECT $SERVER_PATH/tsconfig.json
+
 # * Install packages that are required for this docker image to run
 RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION glob @swc-node/register typescript @antfu/ni
 
@@ -29,9 +32,8 @@ RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION glob @swc-node/register
 RUN pnpm config set store-dir $NHOST_PROJECT_PATH/node_modules/.pnpm-store
 
 # * Copy server files
-COPY nodemon.json start.sh server.ts $SERVER_PATH/
+COPY nodemon.json start.sh server.ts tsconfig.json $SERVER_PATH/
 
 # * Change working directory to the Nhost project directory
 WORKDIR $NHOST_PROJECT_PATH
-
 CMD $SERVER_PATH/start.sh
