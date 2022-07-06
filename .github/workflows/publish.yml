@@ -8,12 +8,14 @@ on:
       - '!*.md'
   push:
     branches: [main]
-    tags:
-      - '*'
     paths:
       - '**'
       - '!example/**'
       - '!*.md'
+  release:
+    types:
+      - published
+
 jobs:
   build-push:
     runs-on: ubuntu-latest
