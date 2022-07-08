@@ -13,6 +13,10 @@ const main = async () => {
   app.use(express.urlencoded({ extended: true }))
   app.disable('x-powered-by')
 
+  app.get('/healthz', (_req: express.Request, res: express.Response) => {
+    res.status(200).send('ok')
+  })
+
   const functionsPath = path.join(process.cwd(), 'functions')
   const files = glob.sync('**/*.@(js|ts)', { cwd: functionsPath })
 
