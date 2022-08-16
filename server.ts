@@ -3,6 +3,10 @@ import path from 'path'
 import express from 'express'
 import glob from 'glob'
 
+const {
+  performance
+} = require('node:perf_hooks')
+
 const PORT = 3000
 
 const main = async () => {
@@ -15,6 +19,18 @@ const main = async () => {
 
   app.get('/healthz', (_req: express.Request, res: express.Response) => {
     res.status(200).send('ok')
+  })
+
+  app.use('/', (req, res, next) => {
+    const requestStart = performance.now()
+    const requestUrl = `${req.method} ${req.originalUrl}`
+
+    console.log(requestUrl)
+    res.on('finish', () => {
+      console.log(`Processed ${requestUrl} in ${performance.now() - requestStart} ms, response code: ${res.statusCode}\n`)
+    })
+
+    next()
   })
 
   const functionsPath = path.join(process.cwd(), 'functions')
