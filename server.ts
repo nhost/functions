@@ -9,9 +9,6 @@ const PORT = 3000
 const main = async () => {
   const app = express()
 
-  // log middleware
-  app.use(morgan('tiny'))
-
   // * Same settings as in Watchtower
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
@@ -20,6 +17,9 @@ const main = async () => {
   app.get('/healthz', (_req: express.Request, res: express.Response) => {
     res.status(200).send('ok')
   })
+
+  // log middleware
+  app.use(morgan('tiny'))
 
   const functionsPath = path.join(process.cwd(), 'functions')
   const files = glob.sync('**/*.@(js|ts)', { cwd: functionsPath })
