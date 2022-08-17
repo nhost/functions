@@ -1,16 +1,16 @@
 import path from 'path'
 
 import express from 'express'
+import morgan from 'morgan'
 import glob from 'glob'
-
-const {
-  performance
-} = require('node:perf_hooks')
 
 const PORT = 3000
 
 const main = async () => {
   const app = express()
+
+  // log middleware
+  app.use(morgan('tiny'))
 
   // * Same settings as in Watchtower
   app.use(express.json())
@@ -21,31 +21,28 @@ const main = async () => {
     res.status(200).send('ok')
   })
 
-  app.use('/', (req, res, next) => {
-    const requestStart = performance.now()
-    const requestUrl = `${req.method} ${req.originalUrl}`
-
-    console.log(requestUrl)
-    res.on('finish', () => {
-      console.log(`Processed ${requestUrl} in ${performance.now() - requestStart} ms, response code: ${res.statusCode}\n`)
-    })
-
-    next()
-  })
-
   const functionsPath = path.join(process.cwd(), 'functions')
   const files = glob.sync('**/*.@(js|ts)', { cwd: functionsPath })
 
   for (const file of files) {
     const { default: handler } = await import(path.join(functionsPath, file))
-    if (handler) {
-      const route = `/${file}`
-        .replace(/(\.ts|\.js)$/, '')
-        .replace(/\/index$/, '/')
-      app.all(route, handler)
+
+    // ignore files inside directories that starts with _
+    const isIgnoredFile = file.startsWith('_') || file.indexOf('/_') !== -1
+
+    if (handler && !isIgnoredFile) {
+      const route = `/${file}`.replace(/(\.ts|\.js)$/, '').replace(/\/index$/, '/')
+
+      try {
+        app.all(route, handler)
+      } catch (error) {
+        console.warn(`Unable to load file ./functions/${file} as a Serverless Function`)
+        continue
+      }
+
       console.log(`Loaded route ${route} from ./functions/${file}`)
     } else {
-      console.warn(`No default export in ./functions/${file}`)
+      console.warn(`No default export or file is ignored at ./functions/${file}`)
     }
   }
 

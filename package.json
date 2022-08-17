@@ -1,0 +1,36 @@
+{
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "## Features",
+  "main": "index.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nhost/functions.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nhost/functions/issues"
+  },
+  "homepage": "https://github.com/nhost/functions#readme",
+  "dependencies": {
+    "@antfu/ni": "^0.17.2",
+    "@swc-node/register": "^1.5.1",
+    "express": "4.17.1",
+    "glob": "^8.0.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.19",
+    "pnpm": "^7.9.0",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.6"
+  }
+}
