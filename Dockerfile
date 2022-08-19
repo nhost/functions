@@ -25,7 +25,7 @@ ENV PACKAGE_MANAGER=pnpm
 ENV SWC_NODE_PROJECT $SERVER_PATH/tsconfig.json
 
 # * Install packages that are required for this docker image to run
-RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION morgan glob @swc-node/register typescript @antfu/ni
+RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION morgan glob tsx @antfu/ni
 
 # * The pnpm store should be mounted in the same volume as node_modules (requires hard links)
 # * See https://pnpm.io/6.x/npmrc#store-dir
