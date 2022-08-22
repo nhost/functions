@@ -13,7 +13,7 @@ const main = async () => {
   // skipping /healthz because docker health checks it every second or so
   app.use(
     morgan('tiny', {
-      skip: (req, res) => req.url === '/healthz'
+      skip: req => req.url === '/healthz'
     })
   )
 
@@ -22,11 +22,14 @@ const main = async () => {
   app.use(express.urlencoded({ extended: true }))
   app.disable('x-powered-by')
 
-  app.get('/healthz', (_req: express.Request, res: express.Response) => {
+  app.get('/healthz', (_req, res) => {
     res.status(200).send('ok')
   })
 
-  const functionsPath = path.join(process.cwd(), 'functions')
+  const functionsPath = path.join(
+    process.cwd(),
+    process.env.FUNCTIONS_RELATIVE_PATH
+  )
   const files = glob.sync('**/*.@(js|ts)', { cwd: functionsPath })
 
   for (const file of files) {
@@ -36,18 +39,24 @@ const main = async () => {
     const isIgnoredFile = file.startsWith('_') || file.indexOf('/_') !== -1
 
     if (handler && !isIgnoredFile) {
-      const route = `/${file}`.replace(/(\.ts|\.js)$/, '').replace(/\/index$/, '/')
+      const route = `/${file}`
+        .replace(/(\.ts|\.js)$/, '')
+        .replace(/\/index$/, '/')
 
       try {
         app.all(route, handler)
       } catch (error) {
-        console.warn(`Unable to load file ./functions/${file} as a Serverless Function`)
+        console.warn(
+          `Unable to load file ./functions/${file} as a Serverless Function`
+        )
         continue
       }
 
       console.log(`Loaded route ${route} from ./functions/${file}`)
     } else {
-      console.warn(`No default export or file is ignored at ./functions/${file}`)
+      console.warn(
+        `No default export or file is ignored at ./functions/${file}`
+      )
     }
   }
 
