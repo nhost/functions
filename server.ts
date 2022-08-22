@@ -30,15 +30,20 @@ const main = async () => {
     process.cwd(),
     process.env.FUNCTIONS_RELATIVE_PATH
   )
-  const files = glob.sync('**/*.@(js|ts)', { cwd: functionsPath })
+  const files = glob.sync('**/*.@(js|ts)', {
+    cwd: functionsPath,
+    ignore: [
+      '**/node_modules/**', // ignore node_modules directories
+      '**/_**/*', // ignore files inside directories that starts with _
+      '**/_*' // ignore files that starts with _
+    ]
+  })
 
   for (const file of files) {
-    const { default: handler } = await import(path.join(functionsPath, file))
+    const filePath = path.join(functionsPath, file)
+    const { default: handler } = await import(filePath)
 
-    // ignore files inside directories that starts with _
-    const isIgnoredFile = file.startsWith('_') || file.indexOf('/_') !== -1
-
-    if (handler && !isIgnoredFile) {
+    if (handler) {
       const route = `/${file}`
         .replace(/(\.ts|\.js)$/, '')
         .replace(/\/index$/, '/')
@@ -46,17 +51,13 @@ const main = async () => {
       try {
         app.all(route, handler)
       } catch (error) {
-        console.warn(
-          `Unable to load file ./functions/${file} as a Serverless Function`
-        )
+        console.warn(`Unable to load file ${filePath} as a Serverless Function`)
         continue
       }
 
-      console.log(`Loaded route ${route} from ./functions/${file}`)
+      console.log(`Loaded route ${route} from ${filePath}`)
     } else {
-      console.warn(
-        `No default export or file is ignored at ./functions/${file}`
-      )
+      console.warn(`No default export at ${filePath}`)
     }
   }
 
