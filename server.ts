@@ -42,13 +42,10 @@ const main = async () => {
   for (const file of files) {
     const { default: handler } = await import(path.join(functionsPath, file))
 
+    // File path relative to the project root directory. Used for logging.
+    const relativePath = path.relative(process.env.NHOST_PROJECT_PATH, file)
+
     if (handler) {
-      // File path relative to the project root directory. Used for logging.
-      const relativePath = path.join(
-        process.env.FUNCTIONS_WORKING_DIR,
-        process.env.FUNCTIONS_RELATIVE_PATH,
-        file
-      )
       const route = `/${file}`
         .replace(/(\.ts|\.js)$/, '')
         .replace(/\/index$/, '/')
