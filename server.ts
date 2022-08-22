@@ -40,8 +40,13 @@ const main = async () => {
   })
 
   for (const file of files) {
-    const filePath = path.join(functionsPath, file)
-    const { default: handler } = await import(filePath)
+    const { default: handler } = await import(path.join(functionsPath, file))
+    // File path relative to the project root directory. Used for logging.
+    const relativePath = path.join(
+      process.env.FUNCTIONS_WORKING_DIR,
+      process.env.FUNCTIONS_RELATIVE_PATH,
+      file
+    )
 
     if (handler) {
       const route = `/${file}`
@@ -51,13 +56,15 @@ const main = async () => {
       try {
         app.all(route, handler)
       } catch (error) {
-        console.warn(`Unable to load file ${filePath} as a Serverless Function`)
+        console.warn(
+          `Unable to load file ${relativePath} as a Serverless Function`
+        )
         continue
       }
 
-      console.log(`Loaded route ${route} from ${filePath}`)
+      console.log(`Loaded route ${route} from ${relativePath}`)
     } else {
-      console.warn(`No default export at ${filePath}`)
+      console.warn(`No default export at ${relativePath}`)
     }
   }
 
