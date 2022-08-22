@@ -119,7 +119,8 @@ services:
       disable: true
     volumes:
       - .:/opt/project
-      - functions_node_modules:/opt/project/node_modules
+      - project_node_modules:/opt/project/node_modules
+      - functions_node_modules:/opt/project/functions/node_modules
       - /opt/project/data/
       - /opt/project/initdb.d/
   minio:
@@ -150,4 +151,5 @@ services:
     volumes:
       - ./data/mailhog:/maildir
 volumes:
+  project_node_modules:
   functions_node_modules:
