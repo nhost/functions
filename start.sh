@@ -26,6 +26,9 @@ else
     fi
 fi
 
+# * Create a default tsconfig.json file in the functions' working directory.
+cp -n $SERVER_PATH/tsconfig.json $FUNCTIONS_WORKING_DIR/tsconfig.json
+
 # * Start nodemon that listens to package.json and lock files and run npm/pnpm/yarn install,
 # * Then run another nodemon that listens to the functions directory and run the server
 FUNCTIONS_WORKING_DIR=$FUNCTIONS_WORKING_DIR \
