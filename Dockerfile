@@ -24,6 +24,10 @@ ENV PACKAGE_MANAGER=pnpm
 # * Use a custom Typescript compiler rather than the one from the project
 ENV SWC_NODE_PROJECT $SERVER_PATH/tsconfig.json
 
+# install dependencies
+RUN apk update && apk upgrade && \
+    apk add --no-cache git openssh
+
 # * Install packages that are required for this docker image to run
 RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION morgan glob tsx @antfu/ni
 
