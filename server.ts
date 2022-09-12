@@ -18,7 +18,7 @@ const main = async () => {
   )
 
   // * Same settings as in Watchtower
-  app.use(express.json())
+  app.use(express.json({ limit: '6MB' }))
   app.use(express.urlencoded({ extended: true }))
   app.disable('x-powered-by')
 
