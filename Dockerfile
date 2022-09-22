@@ -1,10 +1,10 @@
 FROM node:14-alpine
 
 # * Same version as in Watchtower
-ARG EXPRESS_VERSION 4.17.1
+ARG EXPRESS_VERSION=4.18.1
 ENV EXPRESS_VERSION $EXPRESS_VERSION
 
-# * path to the server files 
+# * path to the server files
 ARG SERVER_PATH /opt/server
 ENV SERVER_PATH=$SERVER_PATH
 
