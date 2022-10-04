@@ -4,6 +4,27 @@ import express, { RequestHandler } from 'express'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
 
+console.log('Starting server...')
+// process.once('SIGINT', () => {
+//   // TODO THIS ONE
+//   console.log('SIGINT in CHILD')
+//   process.exit(0)
+// })
+// process.on('SIGQUIT', () => {
+//   console.log('SIGQUIT IN CHILD')
+//   process.exit(0)
+// })
+
+// process.on('beforeExit', () => {
+//   console.log('before exiting... IN CHILD')
+//   // server.close()
+// })
+
+// process.on('exit', () => {
+//   console.log('exit in CHILD!!!!')
+//   process.exit(0)
+// })
+
 const PORT = 3000
 
 // * Initial environment values before loading anything from .env files
@@ -54,7 +75,6 @@ const loadDotEnv = () => {
       break
     }
   }
-
   if (shouldReloadModules) {
     for (const file of Object.keys(modulesFactory)) {
       loadModule(file)
@@ -81,14 +101,16 @@ app.get('/healthz', (_req, res) => {
   res.status(200).send('ok')
 })
 
+// TODO HERE!!!!
 // * Watches and loads .env files into process.env and re-imports all modules when needed
 watch(DOT_FILES, {
-  cwd: process.env.NHOST_PROJECT_PATH
+  cwd: process.env.NHOST_PROJECT_PATH,
+  persistent: false
 }).on('all', loadDotEnv)
-
-// * Watches and loads user handlers
+// // * Watches and loads user handlers
 watch('**/*.@(js|ts)', {
   cwd: FUNCTIONS_FULL_PATH,
+  // persistent: false,
   ignored: [
     '**/node_modules/**', // ignore node_modules directories
     '**/_**/*', // ignore files inside directories that start with _
@@ -118,6 +140,18 @@ watch('**/*.@(js|ts)', {
     console.log(`Removed ${file}. Deactivating route ${route}`)
   })
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`)
 })
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM in CHILD')
+  server.close()
+  process.exit(0)
+})
+
+// process.once('SIGINT', () => {
+//   console.log('Stopping the server...')
+//   server.close()
+//   process.exit(0)
+// })
