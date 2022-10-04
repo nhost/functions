@@ -88,10 +88,6 @@ const main = async () => {
       ),
       { encoding: 'utf8' }
     )
-    copyFileSync(
-      path.join(SERVER_PATH, 'tsconfig.json'),
-      path.join(FUNCTIONS_ROOT_DIR, 'tsconfig.json')
-    )
   }
 
   await startServer()

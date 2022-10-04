@@ -66,9 +66,9 @@ const loadDotEnv = () => {
 const app = express()
 
 // log middleware
-// skipping /healthz because docker health checks it every second or so
 app.use(
   morgan('tiny', {
+    // skipping /healthz because docker health checks it every second or so
     skip: req => req.url === '/healthz'
   })
 )
@@ -82,7 +82,6 @@ app.get('/healthz', (_req, res) => {
   res.status(200).send('ok')
 })
 
-// TODO HERE!!!!
 // * Watches and loads .env files into process.env and re-imports all modules when needed
 watch(DOT_FILES, {
   cwd: process.env.NHOST_PROJECT_PATH,
