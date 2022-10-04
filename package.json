@@ -27,11 +27,13 @@
     "@types/glob": "^7.2.0",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.7.6",
+    "chokidar": "^3.5.3",
     "express": "4.18.1",
     "glob": "^8.0.3",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.19",
     "pnpm": "^7.9.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "dotenv": "^16.0.3"
   }
 }

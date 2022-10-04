@@ -29,7 +29,7 @@ RUN apk update && apk upgrade && \
     apk add --no-cache git openssh
 
 # * Install packages that are required for this docker image to run
-RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION morgan glob tsx @antfu/ni
+RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION morgan tsx @antfu/ni chokidar dotenv
 
 # * The pnpm store should be mounted in the same volume as node_modules (requires hard links)
 # * See https://pnpm.io/6.x/npmrc#store-dir
