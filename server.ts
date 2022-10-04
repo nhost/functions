@@ -5,25 +5,6 @@ import morgan from 'morgan'
 import dotenv from 'dotenv'
 
 console.log('Starting server...')
-// process.once('SIGINT', () => {
-//   // TODO THIS ONE
-//   console.log('SIGINT in CHILD')
-//   process.exit(0)
-// })
-// process.on('SIGQUIT', () => {
-//   console.log('SIGQUIT IN CHILD')
-//   process.exit(0)
-// })
-
-// process.on('beforeExit', () => {
-//   console.log('before exiting... IN CHILD')
-//   // server.close()
-// })
-
-// process.on('exit', () => {
-//   console.log('exit in CHILD!!!!')
-//   process.exit(0)
-// })
 
 const PORT = 3000
 
@@ -149,9 +130,3 @@ process.on('SIGTERM', () => {
   server.close()
   process.exit(0)
 })
-
-// process.once('SIGINT', () => {
-//   console.log('Stopping the server...')
-//   server.close()
-//   process.exit(0)
-// })

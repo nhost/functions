@@ -1,6 +1,6 @@
 import { watch } from 'chokidar'
-import { spawn, spawnSync, ChildProcess, execSync } from 'child_process'
-import { writeFileSync, existsSync, mkdirSync, copyFileSync, fstat } from 'fs'
+import { spawn, spawnSync, ChildProcess } from 'child_process'
+import { writeFileSync, existsSync, mkdirSync, copyFileSync } from 'fs'
 import path from 'path'
 import os from 'os'
 
