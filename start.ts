@@ -91,16 +91,10 @@ const main = async () => {
   }
 
   await startServer()
-  watch(
-    [
-      'package.json',
-      'package-lock.json',
-      'pnpm-lock.yaml',
-      'yarn.lock',
-      'tsconfig.json'
-    ],
-    { cwd: FUNCTIONS_ROOT_DIR, ignoreInitial: true }
-  ).on('all', startServer)
+  watch(['package.json', 'tsconfig.json'], {
+    cwd: FUNCTIONS_ROOT_DIR,
+    ignoreInitial: true
+  }).on('all', startServer)
 }
 
 main()
