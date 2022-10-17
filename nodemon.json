@@ -1,9 +1,9 @@
 {
   "ignore": [
-    "!(package.json|package-lock.json|pnpm-lock.yaml|yarn.lock)"
+    "!(package.json)"
   ],
   "execMap": {
     "json": "cd $FUNCTIONS_WORKING_DIR ; ni ; nodemon --ext 'js,ts' -w $FUNCTIONS_RELATIVE_PATH -x 'tsx' $SERVER_PATH/server.ts"
   },
-  "ext": "json,yaml,lock"
+  "ext": "json"
 }
