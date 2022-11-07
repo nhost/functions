@@ -13,7 +13,7 @@ const main = async () => {
   // skipping /healthz because docker health checks it every second or so
   app.use(
     morgan('tiny', {
-      skip: req => req.url === '/healthz'
+      skip: (req) => req.url === '/healthz'
     })
   )
 
@@ -26,15 +26,12 @@ const main = async () => {
     res.status(200).send('ok')
   })
 
-  const functionsPath = path.join(
-    process.cwd(),
-    process.env.FUNCTIONS_RELATIVE_PATH
-  )
+  const functionsPath = path.join(process.cwd(), process.env.FUNCTIONS_RELATIVE_PATH)
   const files = glob.sync('**/*.@(js|ts)', {
     cwd: functionsPath,
     ignore: [
       '**/node_modules/**', // ignore node_modules directories
-      '**/_**/*', // ignore files inside directories that start with _
+      '**/_*/**', // ignore files inside directories that start with _
       '**/_*' // ignore files that start with _
     ]
   })
@@ -46,16 +43,12 @@ const main = async () => {
     const relativePath = path.relative(process.env.NHOST_PROJECT_PATH, file)
 
     if (handler) {
-      const route = `/${file}`
-        .replace(/(\.ts|\.js)$/, '')
-        .replace(/\/index$/, '/')
+      const route = `/${file}`.replace(/(\.ts|\.js)$/, '').replace(/\/index$/, '/')
 
       try {
         app.all(route, handler)
       } catch (error) {
-        console.warn(
-          `Unable to load file ${relativePath} as a Serverless Function`
-        )
+        console.warn(`Unable to load file ${relativePath} as a Serverless Function`)
         continue
       }
 
