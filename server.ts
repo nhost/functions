@@ -13,12 +13,21 @@ const main = async () => {
   // skipping /healthz because docker health checks it every second or so
   app.use(
     morgan('tiny', {
-      skip: req => req.url === '/healthz'
+      skip: (req) => req.url === '/healthz'
     })
   )
 
   // * Same settings as in Watchtower
-  app.use(express.json({ limit: '6MB' }))
+  app.use(
+    express.json({
+      limit: '6MB',
+      verify: (req, _res, buf) => {
+        // adding the raw body to the reqest object so it can be used for
+        // signature verification(e.g.Stripe Webhooks)
+        req.rawBody = buf.toString()
+      }
+    })
+  )
   app.use(express.urlencoded({ extended: true }))
   app.disable('x-powered-by')
 
@@ -26,10 +35,7 @@ const main = async () => {
     res.status(200).send('ok')
   })
 
-  const functionsPath = path.join(
-    process.cwd(),
-    process.env.FUNCTIONS_RELATIVE_PATH
-  )
+  const functionsPath = path.join(process.cwd(), process.env.FUNCTIONS_RELATIVE_PATH)
   const files = glob.sync('**/*.@(js|ts)', {
     cwd: functionsPath,
     ignore: [
@@ -46,16 +52,12 @@ const main = async () => {
     const relativePath = path.relative(process.env.NHOST_PROJECT_PATH, file)
 
     if (handler) {
-      const route = `/${file}`
-        .replace(/(\.ts|\.js)$/, '')
-        .replace(/\/index$/, '/')
+      const route = `/${file}`.replace(/(\.ts|\.js)$/, '').replace(/\/index$/, '/')
 
       try {
         app.all(route, handler)
       } catch (error) {
-        console.warn(
-          `Unable to load file ${relativePath} as a Serverless Function`
-        )
+        console.warn(`Unable to load file ${relativePath} as a Serverless Function`)
         continue
       }
 
