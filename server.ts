@@ -40,7 +40,7 @@ const main = async () => {
     cwd: functionsPath,
     ignore: [
       '**/node_modules/**', // ignore node_modules directories
-      '**/_**/*', // ignore files inside directories that start with _
+      '**/_*/**', // ignore files inside directories that start with _
       '**/_*' // ignore files that start with _
     ]
   })
