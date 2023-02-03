@@ -3,7 +3,7 @@
     "!(package.json)"
   ],
   "execMap": {
-    "json": "cd $FUNCTIONS_WORKING_DIR ; ni ; nodemon --inspect --ext 'js,ts' -w $FUNCTIONS_RELATIVE_PATH -x 'tsx' $SERVER_PATH/server.ts"
+    "json": "cd $FUNCTIONS_WORKING_DIR ; ni ; nodemon --inspect-brk=0.0.0.0 --ext 'js,ts' -w $FUNCTIONS_RELATIVE_PATH -x 'tsx' $SERVER_PATH/server.ts"
   },
   "ext": "json"
 }
