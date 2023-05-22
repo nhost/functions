@@ -1,5 +1,6 @@
 FROM node:16-alpine
 
+
 # * Same version as in Watchtower
 ARG EXPRESS_VERSION=4.18.1
 ENV EXPRESS_VERSION $EXPRESS_VERSION
@@ -29,7 +30,7 @@ RUN apk update && apk upgrade && \
     apk add --no-cache git openssh
 
 # * Install packages that are required for this docker image to run
-RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION morgan glob tsx @antfu/ni
+RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION morgan glob@8.1.0 tsx @antfu/ni
 
 # * The pnpm store should be mounted in the same volume as node_modules (requires hard links)
 # * See https://pnpm.io/6.x/npmrc#store-dir
@@ -40,4 +41,4 @@ COPY nodemon.json start.sh server.ts tsconfig.json $SERVER_PATH/
 
 # * Change working directory to the Nhost project directory
 WORKDIR $NHOST_PROJECT_PATH
-CMD $SERVER_PATH/start.sh
+ENTRYPOINT $SERVER_PATH/start.sh
