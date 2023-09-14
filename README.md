@@ -3,7 +3,7 @@
 ## Features
 
 - Hot reload of package.json, lock files, and the functions directory
-- Accepts both Javascript and Typesript
+- Accepts both JavaScript and TypeScript
 - Create a package.json file if missing
 - Customisable custom package manager (pnpm by default)
 - No need to add the Express dependency anymore
