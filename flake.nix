@@ -1,5 +1,5 @@
 {
-  description = "Nhost Hasura Auth";
+  description = "Nhost Functions";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -56,7 +56,7 @@
         };
 
 
-        name = "hasura-auth";
+        name = "functions";
         version = "0.0.0-dev";
 
         buildInputs = with pkgs;[
