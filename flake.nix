@@ -59,7 +59,9 @@
         name = "hasura-auth";
         version = "0.0.0-dev";
 
-        buildInputs = [ ];
+        buildInputs = with pkgs;[
+          nodejs
+        ];
         nativeBuildInputs = with pkgs; [
           nodePackages.pnpm
         ];
