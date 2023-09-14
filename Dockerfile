@@ -1,8 +1,8 @@
-FROM node:16-alpine
+FROM node:18-alpine
 
 
 # * Same version as in Watchtower
-ARG EXPRESS_VERSION=4.18.1
+ARG EXPRESS_VERSION=4.18.2
 ENV EXPRESS_VERSION $EXPRESS_VERSION
 
 # * path to the server files
