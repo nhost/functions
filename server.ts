@@ -1,8 +1,7 @@
-import path from 'path'
-
-import express from 'express'
-import morgan from 'morgan'
-import glob from 'glob'
+const path = require('path')
+const express = require('express')
+const morgan = require('morgan')
+const glob = require('glob')
 
 const PORT = 3000
 
