@@ -27,7 +27,7 @@ ENV SWC_NODE_PROJECT $SERVER_PATH/tsconfig.json
 
 # install dependencies
 RUN apk update && apk upgrade && \
-    apk add --no-cache git openssh
+    apk add --no-cache git openssh python3 make g++
 
 # * Install packages that are required for this docker image to run
 RUN npm install -g pnpm nodemon express@$EXPRESS_VERSION morgan glob@8.1.0 tsx @antfu/ni
