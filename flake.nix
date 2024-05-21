@@ -2,22 +2,23 @@
   description = "Nhost Functions";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-filter.url = "github:numtide/nix-filter";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixops.url = "github:nhost/nixops";
+    nixpkgs.follows = "nixops/nixpkgs";
+    flake-utils.follows = "nixops/flake-utils";
+    nix-filter.follows = "nixops/nix-filter";
   };
 
-  outputs = { self, nixpkgs, flake-utils, nix-filter }:
+  outputs = { self, nixops, nixpkgs, flake-utils, nix-filter }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        overlays = [
-          (final: prev: {
-            nodejs = prev.nodejs-18_x;
-          })
-        ];
-
         pkgs = import nixpkgs {
-          inherit overlays system;
+          inherit system;
+          overlays = [
+            nixops.overlays.default
+            (final: prev: {
+              nodejs = prev.nodejs-18_x;
+            })
+          ];
         };
 
         nix-src = nix-filter.lib.filter {
@@ -89,11 +90,11 @@
               gnumake
             ] ++ buildInputs ++ nativeBuildInputs;
 
-            shellHook = ''
-              export PATH=${node_modules}/node_modules/.bin:$PATH
-              rm -rf node_modules
-              ln -sf ${node_modules}/node_modules/ node_modules
-            '';
+            # shellHook = ''
+            #   export PATH=${node_modules}/node_modules/.bin:$PATH
+            #   rm -rf node_modules
+            #   ln -sf ${node_modules}/node_modules/ node_modules
+            # '';
           };
         };
       }
