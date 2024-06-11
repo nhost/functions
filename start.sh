@@ -26,6 +26,12 @@ else
     fi
 fi
 
+# if neither package-lock.json nor yarn.lock exists, error
+if [ ! -f "$FUNCTIONS_WORKING_DIR/package-lock.json" ] && [ ! -f "$FUNCTIONS_WORKING_DIR/yarn.lock" ]; then
+    echo "No lock file found. Please commit your lock file for npm or yarn"
+    exit 1
+fi
+
 # * Create a default tsconfig.json file in the functions' working directory.
 cp -n $SERVER_PATH/tsconfig.json $FUNCTIONS_WORKING_DIR/tsconfig.json
 
