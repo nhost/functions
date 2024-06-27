@@ -28,7 +28,7 @@ fi
 
 # if neither package-lock.json nor yarn.lock exists nor pnpm-lock.yaml, error
 if [ ! -f "$FUNCTIONS_WORKING_DIR/package-lock.json" ] && [ ! -f "$FUNCTIONS_WORKING_DIR/yarn.lock" ] && [ ! -f "$FUNCTIONS_WORKING_DIR/pnpm-lock.yaml" ]; then
-    echo "No lock file found. Please commit your lock file for npm or yarn"
+    echo "No lock file found. Please commit your lock file for npm, yarn, or pnpm"
     exit 1
 fi
 
