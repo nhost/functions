@@ -34,14 +34,18 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Set tag variable
+        id: set_tag
+        run: echo ::set-output name=tag::$(if [ "${{ github.event_name }}" == 'release' ]; then echo "${{ github.ref_name }}"; else echo "0.0.0-dev"; fi)
+
       - name: Build and publish to Docker Hub
         uses: docker/build-push-action@v2
         timeout-minutes: 60
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: "nhost/functions:18-${{ github.ref_name }}"
+          push: ${{ github.event_name == 'release' }}
+          tags: "nhost/functions:20-${{ steps.set_tag.outputs.tag }}"
           file: 18.Dockerfile
 
       - name: Build and publish to Docker Hub
@@ -50,6 +54,6 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: "nhost/functions:20-${{ github.ref_name }}"
+          push: ${{ github.event_name == 'release' }}
+          tags: "nhost/functions:20-${{ steps.set_tag.outputs.tag }}"
           file: 20.Dockerfile
