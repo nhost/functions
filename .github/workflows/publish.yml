@@ -45,7 +45,7 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'release' }}
-          tags: "nhost/functions:20-${{ steps.set_tag.outputs.tag }}"
+          tags: "nhost/functions:18-${{ steps.set_tag.outputs.tag }}"
           file: 18.Dockerfile
 
       - name: Build and publish to Docker Hub
