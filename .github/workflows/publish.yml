@@ -57,3 +57,13 @@ jobs:
           push: ${{ github.event_name == 'release' }}
           tags: "nhost/functions:20-${{ steps.set_tag.outputs.tag }}"
           file: 20.Dockerfile
+
+      - name: Build and publish to Docker Hub
+        uses: docker/build-push-action@v2
+        timeout-minutes: 60
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name == 'release' }}
+          tags: "nhost/functions:22-${{ steps.set_tag.outputs.tag }}"
+          file: 22.Dockerfile
