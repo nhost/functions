@@ -35,6 +35,29 @@ fi
 # * Create a default tsconfig.json file in the functions' working directory.
 cp -n $SERVER_PATH/tsconfig.json $FUNCTIONS_WORKING_DIR/tsconfig.json
 
+# * Validate dependencies for minification compatibility
+echo "Validating dependencies for minification compatibility..."
+CURRENT_DIR=$(pwd)
+
+# Set SERVER_PATH if not already set (for local testing)
+if [ -z "$SERVER_PATH" ]; then
+    SERVER_PATH="$CURRENT_DIR"
+fi
+
+# Only run validation if the validation script exists and we have a package.json
+if [ -f "$SERVER_PATH/validate-minification.js" ] && [ -f "$FUNCTIONS_WORKING_DIR/package.json" ]; then
+    cd $FUNCTIONS_WORKING_DIR
+    if node "$SERVER_PATH/validate-minification.js"; then
+        echo "✅ Dependency validation passed"
+    else
+        echo "⚠️  Dependency validation found potential issues (see output above)"
+        echo "   Functions will still start, but some dependencies may not work properly in production"
+    fi
+    cd "$CURRENT_DIR"
+else
+    echo "Skipping dependency validation (validation script or package.json not found)"
+fi
+
 # * Start nodemon that listens to package.json and lock files and run npm/pnpm/yarn install,
 # * Then run another nodemon that listens to the functions directory and run the server
 FUNCTIONS_WORKING_DIR=$FUNCTIONS_WORKING_DIR \
