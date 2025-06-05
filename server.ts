@@ -44,6 +44,31 @@ const main = async () => {
     ]
   })
 
+  // Add _nhost_functions_metadata endpoint
+  app.get('/_nhost_functions_metadata', (_req, res) => {
+    // Get the major version of Node.js (e.g., "v20.10.0" -> "nodejs20.x")
+    const nodeVersion = process.version
+    const majorVersion = nodeVersion.split('.')[0].substring(1) // Remove 'v' prefix and get major version
+    const runtime = `nodejs${majorVersion}.x`
+
+    const metadata = files.map(file => {
+      const route = `/${file}`.replace(/(\.ts|\.js)$/, '').replace(/\/index$/, '/')
+      const fullPath = path.join('functions', file)
+
+      return {
+        path: fullPath,
+        route: route,
+        runtime: runtime,
+        createdAt: '0001-01-01T00:00:00Z',
+        updatedAt: '0001-01-01T00:00:00Z',
+        functionName: '',
+        createdWithCommitSha: 'localdev'
+      }
+    })
+
+    res.json(metadata)
+  })
+
   for (const file of files) {
     const { default: handler } = await import(path.join(functionsPath, file))
 

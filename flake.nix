@@ -16,7 +16,7 @@
           overlays = [
             nixops.overlays.default
             (final: prev: {
-              nodejs = prev.nodejs-18_x;
+              nodejs = prev.nodejs_22;
             })
           ];
         };
