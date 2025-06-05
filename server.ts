@@ -44,8 +44,8 @@ const main = async () => {
     ]
   })
 
-  // Add _nhost_metadata endpoint
-  app.get('/_nhost_metadata', (_req, res) => {
+  // Add _nhost_functions_metadata endpoint
+  app.get('/_nhost_functions_metadata', (_req, res) => {
     // Get the major version of Node.js (e.g., "v20.10.0" -> "nodejs20.x")
     const nodeVersion = process.version
     const majorVersion = nodeVersion.split('.')[0].substring(1) // Remove 'v' prefix and get major version
